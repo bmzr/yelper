@@ -1,14 +1,17 @@
 CREATE TABLE Business (
     business_id CHAR(22) PRIMARY KEY,
     name VARCHAR(255),
-    city VARCHAR(255),
-    state CHAR(2),
-    zipcode VARCHAR(255),
     address VARCHAR(255),
-    review_count INT,
-    num_checkins INT,
-    review_rating FLOAT,
-    stars FLOAT
+    state CHAR(2),
+    city VARCHAR(255),
+    zipcode VARCHAR(255),
+    latitude FLOAT,
+    longitude FLOAT,
+    stars FLOAT,
+    reviewcount INT,
+    numCheckins INT,
+    openStatus VARCHAR(5),
+    reviewrating FLOAT
 );
 
 CREATE TABLE Checkins (
