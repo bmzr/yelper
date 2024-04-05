@@ -22,7 +22,7 @@ class myApp(QMainWindow):
     def executeQuery(self, sql_str):
         try:
             # conn = psycopg2.connect("dbname='milestone1db' user='postgres' host='localhost' password='112358'")
-            conn = psycopg2.connect(dbname='milestone1db', user='postgres', password='112358', host='localhost', port='5432')
+            conn = psycopg2.connect(dbname='yelpdb', user='postgres', password='112358', host='localhost', port='5432')
         except Exception as e:
             print('Unable to connect to database:', str(e))
         cur = conn.cursor()
@@ -61,20 +61,7 @@ class myApp(QMainWindow):
             sql_str = "SELECT name, city, state FROM business WHERE state ='" + state + "' ORDER BY name;"
             try:
                 results = self.executeQuery(sql_str)
-                style = "::section {""background-color: #f3f3f3; }"
-                self.ui.businessTable.horizontalHeader().setStyleSheet(style)
-                self.ui.businessTable.setColumnCount(len(results[0])) # amount of elements in tuple
-                self.ui.businessTable.setRowCount(len(results))
-                self.ui.businessTable.setHorizontalHeaderLabels(['Business Name', 'City', 'State'])
-                self.ui.businessTable.resizeColumnsToContents()
-                self.ui.businessTable.setColumnWidth(0, 300)
-                self.ui.businessTable.setColumnWidth(1, 100)
-                self.ui.businessTable.setColumnWidth(2, 50)
-                currentRowCount = 0
-                for row in results:
-                    for colCount in range (0, len(results[0])):
-                        self.ui.businessTable.setItem(currentRowCount, colCount, QTableWidgetItem(row[colCount]))
-                    currentRowCount += 1
+                self.updateBusinessTable(results)
             except Exception as e:
                 print("Query failed:", str(e))
 
@@ -83,23 +70,9 @@ class myApp(QMainWindow):
             state = self.ui.stateList.currentText()
             city = self.ui.cityList.selectedItems()[0].text()
             sql_str = "SELECT name, city, state FROM business WHERE state = '" + state + "' AND city='" + city + "' ORDER BY name;"
-            results = self.executeQuery(sql_str)
             try:
                 results = self.executeQuery(sql_str)
-                style = "::section {""background-color: #f3f3f3; }"
-                self.ui.businessTable.horizontalHeader().setStyleSheet(style)
-                self.ui.businessTable.setColumnCount(len(results[0])) # amount of elements in tuple
-                self.ui.businessTable.setRowCount(len(results))
-                self.ui.businessTable.setHorizontalHeaderLabels(['Business Name', 'City', 'State'])
-                self.ui.businessTable.resizeColumnsToContents()
-                self.ui.businessTable.setColumnWidth(0, 300)
-                self.ui.businessTable.setColumnWidth(1, 100)
-                self.ui.businessTable.setColumnWidth(2, 50)
-                currentRowCount = 0
-                for row in results:
-                    for colCount in range (0, len(results[0])):
-                        self.ui.businessTable.setItem(currentRowCount, colCount, QTableWidgetItem(row[colCount]))
-                    currentRowCount += 1
+                self.updateBusinessTable(results)
             except Exception as e:
                 print("Query failed:", str(e))
 
@@ -123,6 +96,21 @@ class myApp(QMainWindow):
         except Exception as e:
             print("Query failed:", str(e))
 
+    def updateBusinessTable(self, results):
+        style = "::section {""background-color: #f3f3f3; }"
+        self.ui.businessTable.horizontalHeader().setStyleSheet(style)
+        self.ui.businessTable.setColumnCount(len(results[0])) # amount of elements in tuple
+        self.ui.businessTable.setRowCount(len(results))
+        self.ui.businessTable.setHorizontalHeaderLabels(['Business Name', 'City', 'State'])
+        self.ui.businessTable.resizeColumnsToContents()
+        self.ui.businessTable.setColumnWidth(0, 300)
+        self.ui.businessTable.setColumnWidth(1, 100)
+        self.ui.businessTable.setColumnWidth(2, 50)
+        currentRowCount = 0
+        for row in results:
+            for colCount in range (0, len(results[0])):
+                self.ui.businessTable.setItem(currentRowCount, colCount, QTableWidgetItem(row[colCount]))
+            currentRowCount += 1
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
