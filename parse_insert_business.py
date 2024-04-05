@@ -31,12 +31,13 @@ def insert2BusinessTable():
             # Generate the INSERT statement for the cussent business
             # TODO: The below INSERT statement is based on a simple (and incomplete) businesstable schema. Update the statement based on your own table schema and
             # include values for all businessTable attributes
-            sql_str = "INSERT INTO Business (business_id, name, address,state,city,zipcode,latitude,longitude,stars,reviewcount,numCheckins,openStatus) " \
+            sql_str = "INSERT INTO Business (business_id, name, address,state,city,zipcode,latitude,longitude,stars,reviewcount,numCheckins,openStatus, reviewrating) " \
                       "VALUES ('" + cleanStr4SQL(data['business_id']) + "','" + cleanStr4SQL(data["name"]) + "','" + cleanStr4SQL(data["address"]) + "','" + \
                       cleanStr4SQL(data["state"]) + "','" + cleanStr4SQL(data["city"]) + "','" + cleanStr4SQL(data["postal_code"]) + "'," + str(data["latitude"]) + "," + \
-                      str(data["longitude"]) + "," + str(data["stars"]) + "," + str(data["review_count"]) + ",0 ,"  + \
-                      int2BoolStr(data["is_open"]) + ");"
+                      str(data["longitude"]) + "," + str(data["stars"]) + "," + str(data["review_count"]) + ",0,"  + \
+                      int2BoolStr(data["is_open"]) + ",0.0" ");"
             try:
+                print(sql_str)
                 cur.execute(sql_str)
             except Exception as e:
                 print("Insert to businessTABLE failed!", e)
