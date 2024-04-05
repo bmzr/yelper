@@ -17,6 +17,7 @@ class myApp(QMainWindow):
         self.ui.stateList.currentTextChanged.connect(self.stateChanged)
         self.ui.cityList.itemSelectionChanged.connect(self.cityChanged)
         self.ui.zipCodeList.itemSelectionChanged.connect(self.zipCodeChanged)
+        self.ui.categoryList.itemSelectionChanged.connect(self.categoryChanged)
         self.ui.bname.textChanged.connect(self.getBusinessNames)
         self.ui.businesses.itemSelectionChanged.connect(self.displayBusinessCity)
 
@@ -114,6 +115,22 @@ class myApp(QMainWindow):
             except Exception as e:
                 print("Query failed:", str(e))
 
+    def categoryChanged(self):
+        if (self.ui.stateList.currentIndex() >= 0) and (len(self.ui.categoryList.selectedItems()) > 0):
+            state = self.ui.stateList.currentText()
+            city = self.ui.cityList.selectedItems()[0].text()
+            zipcode = self.ui.zipCodeList.selectedItems()[0].text()
+            category = self.ui.categoryList.selectedItems()[0].text()
+            sql_str = "SELECT name, city, state FROM business " + \
+            "JOIN categories ON business.business_id = categories.business_id " + \
+            "WHERE state = '" + state + "' AND city = '" + city + "' AND zipcode = '" + zipcode + "' AND category_name = '" + category + "' ORDER BY name;"
+            try:
+                print(sql_str)
+                results = self.executeQuery(sql_str)
+                self.updateBusinessTable(results)
+            except Exception as e:
+                print("Query failed:", str(e))
+
     def getBusinessNames(self):
         self.ui.businesses.clear()
         business_name = self.ui.bname.text()
@@ -135,6 +152,11 @@ class myApp(QMainWindow):
             print("Query failed:", str(e))
 
     def updateBusinessTable(self, results):
+        if len(results) == 0:
+            self.ui.businessTable.setColumnCount(1)
+            self.ui.businessTable.setRowCount(1)
+            self.ui.businessTable.setItem(0, 0, QTableWidgetItem("No businesses found!"))
+            return
         style = "::section {""background-color: #f3f3f3; }"
         self.ui.businessTable.horizontalHeader().setStyleSheet(style)
         self.ui.businessTable.setColumnCount(len(results[0])) # amount of elements in tuple
