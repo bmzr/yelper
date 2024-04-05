@@ -48,6 +48,7 @@ class myApp(QMainWindow):
     def stateChanged(self):
         self.ui.cityList.clear()
         self.ui.zipCodeList.clear()
+        self.ui.categoryList.clear()
         state = self.ui.stateList.currentText()
         if (self.ui.stateList.currentIndex() >= 0):
             sql_str = "SELECT distinct city FROM business WHERE state ='" + state + "' ORDER BY city;"
@@ -69,6 +70,7 @@ class myApp(QMainWindow):
 
     def cityChanged(self):
         self.ui.zipCodeList.clear()
+        self.ui.categoryList.clear()
         if (self.ui.stateList.currentIndex() >= 0) and (len(self.ui.cityList.selectedItems()) > 0):
             city = self.ui.cityList.selectedItems()[0].text()
 
@@ -91,6 +93,7 @@ class myApp(QMainWindow):
                 print("Query failed:", str(e))
 
     def zipCodeChanged(self):
+        self.ui.categoryList.clear()
         if (self.ui.stateList.currentIndex() >= 0) and (len(self.ui.zipCodeList.selectedItems()) > 0):
             state = self.ui.stateList.currentText()
             city = self.ui.cityList.selectedItems()[0].text()
@@ -99,6 +102,15 @@ class myApp(QMainWindow):
             try:
                 results = self.executeQuery(sql_str)
                 self.updateBusinessTable(results)
+            except Exception as e:
+                print("Query failed:", str(e))
+
+            # update categoryList
+            sql_str = "SELECT DISTINCT category_name FROM business JOIN categories ON business.business_id = categories.business_id WHERE zipcode = '" + zipcode + "';"
+            try:
+                results = self.executeQuery(sql_str)
+                for row in results:
+                    self.ui.categoryList.addItem(row[0])
             except Exception as e:
                 print("Query failed:", str(e))
 
