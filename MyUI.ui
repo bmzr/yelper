@@ -27,7 +27,7 @@
      <string notr="true">font: 12pt &quot;Calibri&quot;;</string>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="page">
      <property name="geometry">
@@ -87,8 +87,8 @@ font: 10pt &quot;Lucida Sans&quot;;</string>
       <widget class="QLabel" name="label_2">
        <property name="geometry">
         <rect>
-         <x>40</x>
-         <y>110</y>
+         <x>80</x>
+         <y>80</y>
          <width>47</width>
          <height>13</height>
         </rect>
@@ -96,13 +96,46 @@ font: 10pt &quot;Lucida Sans&quot;;</string>
        <property name="text">
         <string>City</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
       <widget class="QListWidget" name="cityList">
        <property name="geometry">
         <rect>
-         <x>100</x>
-         <y>90</y>
+         <x>10</x>
+         <y>100</y>
          <width>191</width>
+         <height>291</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 255, 255);
+font: 10pt &quot;Lucida Sans&quot;;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>230</x>
+         <y>80</y>
+         <width>71</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>ZIP Code</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="zipCodeList">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>100</y>
+         <width>91</width>
          <height>291</height>
         </rect>
        </property>
