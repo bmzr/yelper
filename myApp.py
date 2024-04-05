@@ -16,6 +16,7 @@ class myApp(QMainWindow):
         self.loadStateList()
         self.ui.stateList.currentTextChanged.connect(self.stateChanged)
         self.ui.cityList.itemSelectionChanged.connect(self.cityChanged)
+        self.ui.zipCodeList.itemSelectionChanged.connect(self.zipCodeChanged)
         self.ui.bname.textChanged.connect(self.getBusinessNames)
         self.ui.businesses.itemSelectionChanged.connect(self.displayBusinessCity)
 
@@ -46,6 +47,7 @@ class myApp(QMainWindow):
 
     def stateChanged(self):
         self.ui.cityList.clear()
+        self.ui.zipCodeList.clear()
         state = self.ui.stateList.currentText()
         if (self.ui.stateList.currentIndex() >= 0):
             sql_str = "SELECT distinct city FROM business WHERE state ='" + state + "' ORDER BY city;"
@@ -66,10 +68,34 @@ class myApp(QMainWindow):
                 print("Query failed:", str(e))
 
     def cityChanged(self):
+        self.ui.zipCodeList.clear()
         if (self.ui.stateList.currentIndex() >= 0) and (len(self.ui.cityList.selectedItems()) > 0):
+            city = self.ui.cityList.selectedItems()[0].text()
+
+            # update zipCodeList
+            sql_str = "SELECT distinct zipcode FROM business WHERE city ='" + city + "';"
+            try:
+                results = self.executeQuery(sql_str)
+                for row in results:
+                    self.ui.zipCodeList.addItem(row[0]) 
+            except Exception as e:
+                print("Query failed:", str(e))
+            
             state = self.ui.stateList.currentText()
             city = self.ui.cityList.selectedItems()[0].text()
             sql_str = "SELECT name, city, state FROM business WHERE state = '" + state + "' AND city='" + city + "' ORDER BY name;"
+            try:
+                results = self.executeQuery(sql_str)
+                self.updateBusinessTable(results)
+            except Exception as e:
+                print("Query failed:", str(e))
+
+    def zipCodeChanged(self):
+        if (self.ui.stateList.currentIndex() >= 0) and (len(self.ui.zipCodeList.selectedItems()) > 0):
+            state = self.ui.stateList.currentText()
+            city = self.ui.cityList.selectedItems()[0].text()
+            zipcode = self.ui.zipCodeList.selectedItems()[0].text()
+            sql_str = "SELECT name, city, state FROM business WHERE state = '" + state + "' AND city='" + city + "'" + "AND zipcode='" + zipcode + "' ORDER BY name;"
             try:
                 results = self.executeQuery(sql_str)
                 self.updateBusinessTable(results)
