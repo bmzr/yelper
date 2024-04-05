@@ -16,8 +16,8 @@ CREATE TABLE Business (
 
 CREATE TABLE Checkins (
     business_id CHAR(22) NOT NULL,
-    day DATE,
-    time TIME,
+    day VARCHAR(255),
+    time CHAR(5),
     count INT,
     PRIMARY KEY (business_id, day, time),
     FOREIGN KEY (business_id) REFERENCES Business(business_id)
