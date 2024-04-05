@@ -11,7 +11,7 @@ CREATE TABLE Business (
     reviewcount INT,
     numCheckins INT,
     openStatus VARCHAR(5),
-    reviewrating FLOAT
+    reviewrating FLOAT DEFAULT 0.0
 );
 
 CREATE TABLE Checkins (
