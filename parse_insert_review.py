@@ -31,12 +31,11 @@ def insert2ReviewTable():
             # Generate the INSERT statement for the cussent business
             # TODO: The below INSERT statement is based on a simple (and incomplete) businesstable schema. Update the statement based on your own table schema and
             # include values for all businessTable attributes
-            sql_str = "INSERT INTO Business (business_id, name, address,state,city,zipcode,latitude,longitude,stars,reviewcount,numCheckins,openStatus) " \
-                      "VALUES ('" + cleanStr4SQL(data['business_id']) + "','" + cleanStr4SQL(data["name"]) + "','" + cleanStr4SQL(data["address"]) + "','" + \
-                      cleanStr4SQL(data["state"]) + "','" + cleanStr4SQL(data["city"]) + "','" + cleanStr4SQL(data["postal_code"]) + "'," + str(data["latitude"]) + "," + \
-                      str(data["longitude"]) + "," + str(data["stars"]) + "," + str(data["review_count"]) + ",0 ,"  + \
-                      int2BoolStr(data["is_open"]) + ");"
+            sql_str = "INSERT INTO Review (business_id, review_id, review_stars, date, text, useful_vote, funny_vote, cool_vote) " \
+                      "VALUES ('" + cleanStr4SQL(data['business_id']) + "','" + cleanStr4SQL(data["review_id"]) + "','" + str(data["stars"]) + "','" + cleanStr4SQL(data["date"]) + "','" + \
+                      cleanStr4SQL(data["text"]) + "','" + str(data["useful"]) + "','" + str(data["funny"]) + "','" + str(data["cool"]) + "');"
             try:
+                print(sql_str)
                 cur.execute(sql_str)
             except Exception as e:
                 print("Insert to businessTABLE failed!", e)

@@ -9,7 +9,7 @@ def int2BoolStr (value):
         return 'False'
     else:
         return 'True'
-
+    
 def insert2BusinessTable():
     #reading the JSON file
     with open('./yelp_business.JSON','r') as f:    #TODO: update path for the input file

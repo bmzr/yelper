@@ -10,9 +10,9 @@ def int2BoolStr (value):
     else:
         return 'True'
 
-def insert2ReviewTable():
+def insert2CheckinsTable():
         #reading the JSON file
-    with open('./yelp_review.JSON','r') as f:    #TODO: update path for the input file
+    with open('./yelp_checkin.JSON','r') as f:    #TODO: update path for the input file
         #outfile =  open('./yelp_business.SQL', 'w')  #uncomment this line if you are writing the INSERT statements to an output file.
         line = f.readline()
         count_line = 0
@@ -31,16 +31,16 @@ def insert2ReviewTable():
             # Generate the INSERT statement for the cussent business
             # TODO: The below INSERT statement is based on a simple (and incomplete) businesstable schema. Update the statement based on your own table schema and
             # include values for all businessTable attributes
-            sql_str = "INSERT INTO Business (business_id, name, address,state,city,zipcode,latitude,longitude,stars,reviewcount,numCheckins,openStatus) " \
-                      "VALUES ('" + cleanStr4SQL(data['business_id']) + "','" + cleanStr4SQL(data["name"]) + "','" + cleanStr4SQL(data["address"]) + "','" + \
-                      cleanStr4SQL(data["state"]) + "','" + cleanStr4SQL(data["city"]) + "','" + cleanStr4SQL(data["postal_code"]) + "'," + str(data["latitude"]) + "," + \
-                      str(data["longitude"]) + "," + str(data["stars"]) + "," + str(data["review_count"]) + ",0 ,"  + \
-                      int2BoolStr(data["is_open"]) + ");"
-            try:
-                cur.execute(sql_str)
-            except Exception as e:
-                print("Insert to businessTABLE failed!", e)
-            conn.commit()
+            for day, time_dict in data["time"].items():
+                for time, count in time_dict.items():
+                    sql_str = "INSERT INTO Checkins (business_id, day, time, count) " \
+                            "VALUES ('" + cleanStr4SQL(data['business_id']) + "','" + cleanStr4SQL(day) + "','" + cleanStr4SQL(time) + "','" + str(count) + "');"
+                    try:
+                        print(sql_str)
+                        cur.execute(sql_str)
+                    except Exception as e:
+                        print("Insert to businessTABLE failed!", e)
+                    conn.commit()
             # optionally you might write the INSERT statement to a file.
             #outfile.write(sql_str)
 
@@ -54,4 +54,4 @@ def insert2ReviewTable():
     #outfile.close()  #uncomment this line if you are writing the INSERT statements to an output file.
     f.close()
 
-insert2ReviewTable()
+insert2CheckinsTable()
