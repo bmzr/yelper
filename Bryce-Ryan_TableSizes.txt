@@ -1,0 +1,5 @@
+Business table: 11481 tuples
+Categories table: 33619 tuples
+Checkins table: 481630 tuples
+Attributes table: 227536 tuples
+Review table: 416479 tuples
