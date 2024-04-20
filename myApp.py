@@ -115,6 +115,61 @@ class myApp(QMainWindow):
             except Exception as e:
                 print("Query failed:", str(e))
 
+            # update zip code statistics
+            self.updateZipCodeStatistics()
+
+    def updateZipCodeStatistics(self):
+        # update business count text box
+        self.ui.zipCodeBusinessCount.clear()
+        zipcode = self.ui.zipCodeList.selectedItems()[0].text()
+        sql_str = "SELECT COUNT(*) FROM business WHERE zipcode = '" + zipcode + "';"
+        results = self.executeQuery(sql_str)
+        print(results)
+        self.ui.zipCodeBusinessCount.addItem(str(results[0][0]))
+
+        # update population text box
+        self.ui.zipCodePopulationCount.clear()
+        zipcode = self.ui.zipCodeList.selectedItems()[0].text()
+        sql_str = "SELECT population FROM zipcodedata WHERE zipcode = '" + zipcode + "';"
+        results = self.executeQuery(sql_str)
+        print(results)
+        self.ui.zipCodePopulationCount.addItem(str(results[0][0]))
+
+        # update avg income text box
+        self.ui.zipCodeAverageIncome.clear()
+        zipcode = self.ui.zipCodeList.selectedItems()[0].text()
+        sql_str = "SELECT meanIncome FROM zipcodedata WHERE zipcode = '" + zipcode + "';"
+        results = self.executeQuery(sql_str)
+        print(results)
+        self.ui.zipCodeAverageIncome.addItem(str(results[0][0]))
+
+        # update top categories table
+        sql_str = "SELECT c.category_name, COUNT(*) AS category_count " + \
+        "FROM categories c JOIN business b ON c.business_id = b.business_id " + \
+        "WHERE b.zipcode = '" + zipcode + "' GROUP BY c.category_name ORDER BY category_count DESC;"
+        try:
+            results = self.executeQuery(sql_str)
+            if len(results) == 0:
+                self.ui.zipCodeTopCategories.setColumnCount(1)
+                self.ui.zipCodeTopCategories.setRowCount(1)
+                self.ui.zipCodeTopCategories.setItem(0, 0, QTableWidgetItem("No categories found!"))
+                return
+            self.ui.zipCodeTopCategories.setColumnCount(len(results[0])) # amount of elements in tuple
+            self.ui.zipCodeTopCategories.setRowCount(len(results))
+            self.ui.zipCodeTopCategories.setHorizontalHeaderLabels(['Category', '#'])
+            #self.ui.zipCodeTopCategories.horizontalHeader().setMinimumHeight(20)
+            self.ui.zipCodeTopCategories.setColumnWidth(0, 250)
+            self.ui.zipCodeTopCategories.setColumnWidth(1, 20)
+            currentRowCount = 0
+            for row in results:
+                for colCount in range (0, len(results[0])):
+                    print(row[colCount])
+                    self.ui.zipCodeTopCategories.setItem(currentRowCount, colCount, QTableWidgetItem(str(row[colCount])))
+                currentRowCount += 1
+        except Exception as e:
+            print("Query failed:", str(e))
+        
+
     def categoryChanged(self):
         if (self.ui.stateList.currentIndex() >= 0) and (len(self.ui.categoryList.selectedItems()) > 0):
             state = self.ui.stateList.currentText()

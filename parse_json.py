@@ -1,5 +1,5 @@
 import json
-
+import psycopg2
 
 def cleanStr4SQL(s):
     return s.replace("'","''").replace("\n"," ")
@@ -20,6 +20,15 @@ def parseBusinessData():
         outfile =  open('.//yelp_business.txt', 'w')
         line = f.readline()
         count_line = 0
+
+        # connect to server
+        try:
+            # conn = psycopg2.connect("dbname='milestone1db' user='postgres' host='localhost' password='112358'")
+            conn = psycopg2.connect(dbname='milestone1db', user='postgres', password='112358', host='localhost', port='5432')
+        except Exception as e:
+            print('Unable to connect to database:', str(e))
+        cur = conn.cursor()
+        
         #read each JSON abject and extract data
         while line:
             data = json.loads(line)

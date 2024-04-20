@@ -20,7 +20,7 @@
       <x>10</x>
       <y>10</y>
       <width>1101</width>
-      <height>471</height>
+      <height>541</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -35,19 +35,19 @@
        <x>0</x>
        <y>0</y>
        <width>1101</width>
-       <height>405</height>
+       <height>475</height>
       </rect>
      </property>
      <attribute name="label">
-      <string>Milestone1 - Page 1</string>
+      <string>Search Business by Location</string>
      </attribute>
      <widget class="QGroupBox" name="stateCityGroup">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>0</y>
-        <width>511</width>
-        <height>401</height>
+        <width>411</width>
+        <height>171</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -55,15 +55,15 @@
 background-color: rgb(197, 238, 255);</string>
       </property>
       <property name="title">
-       <string>State / City</string>
+       <string>Select Location</string>
       </property>
       <widget class="QComboBox" name="stateList">
        <property name="geometry">
         <rect>
-         <x>100</x>
-         <y>30</y>
-         <width>191</width>
-         <height>31</height>
+         <x>10</x>
+         <y>50</y>
+         <width>71</width>
+         <height>21</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -74,10 +74,10 @@ font: 10pt &quot;Lucida Sans&quot;;</string>
       <widget class="QLabel" name="label">
        <property name="geometry">
         <rect>
-         <x>40</x>
-         <y>40</y>
+         <x>10</x>
+         <y>30</y>
          <width>47</width>
-         <height>13</height>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -88,9 +88,9 @@ font: 10pt &quot;Lucida Sans&quot;;</string>
        <property name="geometry">
         <rect>
          <x>80</x>
-         <y>80</y>
+         <y>30</y>
          <width>47</width>
-         <height>13</height>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -103,10 +103,10 @@ font: 10pt &quot;Lucida Sans&quot;;</string>
       <widget class="QListWidget" name="cityList">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>100</y>
-         <width>191</width>
-         <height>291</height>
+         <x>90</x>
+         <y>50</y>
+         <width>171</width>
+         <height>111</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -117,10 +117,10 @@ font: 10pt &quot;Lucida Sans&quot;;</string>
       <widget class="QLabel" name="label_5">
        <property name="geometry">
         <rect>
-         <x>230</x>
-         <y>80</y>
+         <x>270</x>
+         <y>30</y>
          <width>71</width>
-         <height>16</height>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -133,40 +133,10 @@ font: 10pt &quot;Lucida Sans&quot;;</string>
       <widget class="QListWidget" name="zipCodeList">
        <property name="geometry">
         <rect>
-         <x>220</x>
-         <y>100</y>
-         <width>91</width>
-         <height>291</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(255, 255, 255);
-font: 10pt &quot;Lucida Sans&quot;;</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_6">
-       <property name="geometry">
-        <rect>
-         <x>370</x>
-         <y>80</y>
-         <width>81</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Categories</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QListWidget" name="categoryList">
-       <property name="geometry">
-        <rect>
-         <x>330</x>
-         <y>100</y>
-         <width>161</width>
-         <height>291</height>
+         <x>270</x>
+         <y>50</y>
+         <width>131</width>
+         <height>111</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -175,13 +145,13 @@ font: 10pt &quot;Lucida Sans&quot;;</string>
        </property>
       </widget>
      </widget>
-     <widget class="QGroupBox" name="businessGroup">
+     <widget class="QGroupBox" name="zipCodeGroup">
       <property name="geometry">
        <rect>
-        <x>540</x>
+        <x>430</x>
         <y>0</y>
-        <width>561</width>
-        <height>401</height>
+        <width>671</width>
+        <height>171</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -189,15 +159,181 @@ font: 10pt &quot;Lucida Sans&quot;;</string>
 background-color: rgb(197, 238, 255);</string>
       </property>
       <property name="title">
-       <string>Businesses</string>
+       <string>ZIP Code Statistics</string>
       </property>
+      <widget class="QLabel" name="label_17">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>121</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string># of Businesses:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_18">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>80</y>
+         <width>131</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Total Population:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_19">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>130</y>
+         <width>131</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Average Income:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="zipCodeBusinessCount">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>30</y>
+         <width>151</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 255, 255);
+font: 10pt &quot;Lucida Sans&quot;;</string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="zipCodePopulationCount">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>80</y>
+         <width>151</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 255, 255);
+font: 10pt &quot;Lucida Sans&quot;;</string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="zipCodeAverageIncome">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>130</y>
+         <width>151</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 255, 255);
+font: 10pt &quot;Lucida Sans&quot;;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_20">
+       <property name="geometry">
+        <rect>
+         <x>430</x>
+         <y>0</y>
+         <width>121</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Top Categories:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QTableWidget" name="zipCodeTopCategories">
+       <property name="geometry">
+        <rect>
+         <x>320</x>
+         <y>20</y>
+         <width>341</width>
+         <height>141</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: #FFFFFF</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="businessGroup">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>180</y>
+        <width>1091</width>
+        <height>251</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 11pt &quot;Lucida Sans&quot;;
+background-color: rgb(197, 238, 255);</string>
+      </property>
+      <property name="title">
+       <string>Filter on Categories</string>
+      </property>
+      <widget class="QLabel" name="label_6">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>121</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Select Category</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="categoryList">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>201</width>
+         <height>191</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 255, 255);
+font: 10pt &quot;Lucida Sans&quot;;</string>
+       </property>
+      </widget>
       <widget class="QTableWidget" name="businessTable">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>30</y>
-         <width>521</width>
-         <height>351</height>
+         <x>240</x>
+         <y>50</y>
+         <width>841</width>
+         <height>191</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -213,6 +349,22 @@ background-color: rgb(197, 238, 255);</string>
         <bool>false</bool>
        </attribute>
       </widget>
+      <widget class="QLabel" name="label_16">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>30</y>
+         <width>81</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Businesses</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="page_2">
@@ -220,12 +372,12 @@ background-color: rgb(197, 238, 255);</string>
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>911</width>
-       <height>405</height>
+       <width>1101</width>
+       <height>475</height>
       </rect>
      </property>
      <attribute name="label">
-      <string>Milestone1 - Page 2</string>
+      <string>Search Business by Name</string>
      </attribute>
      <widget class="QGroupBox" name="groupBox">
       <property name="geometry">

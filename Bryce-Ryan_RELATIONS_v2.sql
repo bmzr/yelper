@@ -1,3 +1,11 @@
+CREATE TABLE zipcodeData (
+    zipcode VARCHAR(255),
+    medianIncome INT,
+    meanIncome INT,
+    population INT,
+    PRIMARY KEY (zipcode)
+);
+
 CREATE TABLE Business (
     business_id CHAR(22) PRIMARY KEY,
     name VARCHAR(255),
@@ -11,7 +19,8 @@ CREATE TABLE Business (
     reviewcount INT,
     numCheckins INT,
     openStatus VARCHAR(5),
-    reviewrating FLOAT DEFAULT 0.0
+    reviewrating FLOAT DEFAULT 0.0,
+    FOREIGN KEY (zipcode) REFERENCES zipcodeData(zipcode)
 );
 
 CREATE TABLE Checkins (
