@@ -62,7 +62,10 @@ class myApp(QMainWindow):
 
             for i in reversed(range(self.ui.businessTable.rowCount())):
                 self.ui.businessTable.removeRow(i)
-            sql_str = "SELECT name, city, state FROM business WHERE state ='" + state + "' ORDER BY name;"
+            sql_str = "SELECT b.name, b.address, b.city, b.stars, b.reviewcount, b.reviewrating, COALESCE(SUM(c.count), 0) " + \
+            "FROM business AS b JOIN checkins c ON b.business_id = c.business_id " + \
+            "WHERE b.state = '" + state + "' " + \
+            "GROUP BY b.business_id, b.name, b.address, b.city, b.stars, b.reviewcount, b.reviewrating;"
             try:
                 results = self.executeQuery(sql_str)
                 self.updateBusinessTable(results)
@@ -86,7 +89,10 @@ class myApp(QMainWindow):
             
             state = self.ui.stateList.currentText()
             city = self.ui.cityList.selectedItems()[0].text()
-            sql_str = "SELECT name, city, state FROM business WHERE state = '" + state + "' AND city='" + city + "' ORDER BY name;"
+            sql_str = "SELECT b.name, b.address, b.city, b.stars, b.reviewcount, b.reviewrating, COALESCE(SUM(c.count), 0) " + \
+            "FROM business AS b JOIN checkins c ON b.business_id = c.business_id " + \
+            "WHERE b.state = '" + state + "' AND b.city = '" + city + "' " + \
+            "GROUP BY b.business_id, b.name, b.address, b.city, b.stars, b.reviewcount, b.reviewrating;"
             try:
                 results = self.executeQuery(sql_str)
                 self.updateBusinessTable(results)
@@ -99,7 +105,10 @@ class myApp(QMainWindow):
             state = self.ui.stateList.currentText()
             city = self.ui.cityList.selectedItems()[0].text()
             zipcode = self.ui.zipCodeList.selectedItems()[0].text()
-            sql_str = "SELECT name, city, state FROM business WHERE state = '" + state + "' AND city='" + city + "'" + "AND zipcode='" + zipcode + "' ORDER BY name;"
+            sql_str = "SELECT b.name, b.address, b.city, b.stars, b.reviewcount, b.reviewrating, COALESCE(SUM(c.count), 0) " + \
+            "FROM business AS b JOIN checkins c ON b.business_id = c.business_id " + \
+            "WHERE b.state = '" + state + "' AND b.city = '" + city + "' AND b.zipcode = '" + zipcode + "' " + \
+            "GROUP BY b.business_id, b.name, b.address, b.city, b.stars, b.reviewcount, b.reviewrating;"
             try:
                 results = self.executeQuery(sql_str)
                 self.updateBusinessTable(results)
@@ -154,6 +163,8 @@ class myApp(QMainWindow):
                 self.ui.zipCodeTopCategories.setRowCount(1)
                 self.ui.zipCodeTopCategories.setItem(0, 0, QTableWidgetItem("No categories found!"))
                 return
+            style = "::section {""background-color: #f3f3f3; }"
+            self.ui.zipCodeTopCategories.horizontalHeader().setStyleSheet(style)
             self.ui.zipCodeTopCategories.setColumnCount(len(results[0])) # amount of elements in tuple
             self.ui.zipCodeTopCategories.setRowCount(len(results))
             self.ui.zipCodeTopCategories.setHorizontalHeaderLabels(['Category', '#'])
@@ -176,9 +187,15 @@ class myApp(QMainWindow):
             city = self.ui.cityList.selectedItems()[0].text()
             zipcode = self.ui.zipCodeList.selectedItems()[0].text()
             category = self.ui.categoryList.selectedItems()[0].text()
-            sql_str = "SELECT name, city, state FROM business " + \
-            "JOIN categories ON business.business_id = categories.business_id " + \
-            "WHERE state = '" + state + "' AND city = '" + city + "' AND zipcode = '" + zipcode + "' AND category_name = '" + category + "' ORDER BY name;"
+            # sql_str = "SELECT name, city, state FROM business " + \
+            # "JOIN categories ON business.business_id = categories.business_id " + \
+            # "WHERE state = '" + state + "' AND city = '" + city + "' AND zipcode = '" + zipcode + "' AND category_name = '" + category + "' ORDER BY name;"
+
+            sql_str = "SELECT b.name, b.address, b.city, b.stars, b.reviewcount, b.reviewrating, COALESCE(SUM(c.count), 0) " + \
+            "FROM business AS b JOIN checkins c ON b.business_id = c.business_id " + \
+            "LEFT JOIN categories c2 ON b.business_id = c2.business_id " + \
+            "WHERE b.state = '" + state + "' AND b.city = '" + city + "' AND b.zipcode = '" + zipcode + "' AND c2.category_name = '" + category + "' " + \
+            "GROUP BY b.business_id, b.name, b.address, b.city, b.stars, b.reviewcount, b.reviewrating, c2.category_name;"
             try:
                 print(sql_str)
                 results = self.executeQuery(sql_str)
@@ -214,17 +231,25 @@ class myApp(QMainWindow):
             return
         style = "::section {""background-color: #f3f3f3; }"
         self.ui.businessTable.horizontalHeader().setStyleSheet(style)
+        self.ui.businessTable.horizontalHeader().setMinimumHeight(40)
         self.ui.businessTable.setColumnCount(len(results[0])) # amount of elements in tuple
         self.ui.businessTable.setRowCount(len(results))
-        self.ui.businessTable.setHorizontalHeaderLabels(['Business Name', 'City', 'State'])
+        self.ui.businessTable.setHorizontalHeaderLabels(['Business Name', 'Address', 'City', 'Stars', '# Reviews', 'Review Rating', 'Checkins'])
         self.ui.businessTable.resizeColumnsToContents()
-        self.ui.businessTable.setColumnWidth(0, 300)
-        self.ui.businessTable.setColumnWidth(1, 100)
-        self.ui.businessTable.setColumnWidth(2, 50)
+        self.ui.businessTable.setColumnWidth(0, 300) # business name
+        self.ui.businessTable.setColumnWidth(1, 200) # address
+        self.ui.businessTable.setColumnWidth(2, 100) # city
+        self.ui.businessTable.setColumnWidth(3, 50) # stars
+        self.ui.businessTable.setColumnWidth(4, 100) # reviewcount
+        self.ui.businessTable.setColumnWidth(5, 150) # reviewrating 
+        self.ui.businessTable.setColumnWidth(6, 50) # checkins
         currentRowCount = 0
         for row in results:
             for colCount in range (0, len(results[0])):
-                self.ui.businessTable.setItem(currentRowCount, colCount, QTableWidgetItem(row[colCount]))
+                if isinstance(row[colCount], float):
+                    self.ui.businessTable.setItem(currentRowCount, colCount, QTableWidgetItem(str(round(row[colCount], 2))))
+                else:
+                    self.ui.businessTable.setItem(currentRowCount, colCount, QTableWidgetItem(str(row[colCount])))
             currentRowCount += 1
 
 if __name__ == "__main__":
