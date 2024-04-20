@@ -127,6 +127,9 @@ class myApp(QMainWindow):
             # update zip code statistics
             self.updateZipCodeStatistics()
 
+            # update popular and successful business tables
+            self.updatePopularTable()
+
     def updateZipCodeStatistics(self):
         # update business count text box
         self.ui.zipCodeBusinessCount.clear()
@@ -180,7 +183,35 @@ class myApp(QMainWindow):
         except Exception as e:
             print("Query failed:", str(e))
         
+    def updatePopularTable(self):
+        # get businesses where avg checkin count is higher than avg in the zipcode
+        zipcode = self.ui.zipCodeList.selectedItems()[0].text()
+        sql_str = "SELECT b.name FROM business b JOIN checkins c ON b.business_id = c.business_id " + \
+        "WHERE b.zipcode = '" + zipcode + "' GROUP BY b.business_id, b.name " + \
+        "HAVING AVG(c.count) > (SELECT AVG(c.count) FROM business b JOIN checkins c ON b.business_id = c.business_id WHERE b.zipcode = '" + zipcode + "');"
+        try:
+            results = self.executeQuery(sql_str)
 
+            # update popular table
+            if len(results) == 0:
+                self.ui.popularTable.setColumnCount(1)
+                self.ui.popularTable.setRowCount(1)
+                self.ui.popularTable.setItem(0, 0, QTableWidgetItem("No popular businesses found!"))
+                return
+            self.ui.popularTable.setColumnCount(len(results[0])) # amount of elements in tuple
+            self.ui.popularTable.setRowCount(len(results))
+            self.ui.popularTable.setHorizontalHeaderLabels(['Business Name'])
+            currentRowCount = 0
+            for row in results:
+                for colCount in range (0, len(results[0])):
+                    if isinstance(row[colCount], float):
+                        self.ui.popularTable.setItem(currentRowCount, colCount, QTableWidgetItem(str(round(row[colCount], 2))))
+                    else:
+                        self.ui.popularTable.setItem(currentRowCount, colCount, QTableWidgetItem(str(row[colCount])))
+                currentRowCount += 1
+        except Exception as e:
+            print("popular Query failed:", str(e))
+        
     def categoryChanged(self):
         if (self.ui.stateList.currentIndex() >= 0) and (len(self.ui.categoryList.selectedItems()) > 0):
             state = self.ui.stateList.currentText()
