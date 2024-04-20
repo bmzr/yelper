@@ -129,6 +129,7 @@ class myApp(QMainWindow):
 
             # update popular and successful business tables
             self.updatePopularTable()
+            self.updateSuccessfulTable()
 
     def updateZipCodeStatistics(self):
         # update business count text box
@@ -198,6 +199,8 @@ class myApp(QMainWindow):
                 self.ui.popularTable.setRowCount(1)
                 self.ui.popularTable.setItem(0, 0, QTableWidgetItem("No popular businesses found!"))
                 return
+            style = "::section {""background-color: #f3f3f3; }"
+            self.ui.popularTable.horizontalHeader().setStyleSheet(style)
             self.ui.popularTable.setColumnCount(len(results[0])) # amount of elements in tuple
             self.ui.popularTable.setRowCount(len(results))
             self.ui.popularTable.setHorizontalHeaderLabels(['Business Name'])
@@ -212,6 +215,37 @@ class myApp(QMainWindow):
         except Exception as e:
             print("popular Query failed:", str(e))
         
+    def updateSuccessfulTable(self):
+        # get businesses with >=4.0 stars
+        zipcode = self.ui.zipCodeList.selectedItems()[0].text()
+        sql_str = "SELECT b.name, b.stars FROM business b WHERE b.zipcode = '" + zipcode + "' AND b.stars >= 4.0;"
+        try:
+            results = self.executeQuery(sql_str)
+
+            # update successful table
+            if len(results) == 0:
+                self.ui.successfulTable.setColumnCount(1)
+                self.ui.successfulTable.setRowCount(1)
+                self.ui.successfulTable.setItem(0, 0, QTableWidgetItem("No successful businesses found!"))
+                return
+            style = "::section {""background-color: #f3f3f3; }"
+            self.ui.successfulTable.horizontalHeader().setStyleSheet(style)
+            self.ui.successfulTable.setColumnCount(len(results[0])) # amount of elements in tuple
+            self.ui.successfulTable.setRowCount(len(results))
+            self.ui.successfulTable.setHorizontalHeaderLabels(['Business Name', 'Stars'])
+            self.ui.successfulTable.setColumnWidth(0, 400) # business name
+            self.ui.successfulTable.setColumnWidth(1, 100) # stars
+            currentRowCount = 0
+            for row in results:
+                for colCount in range (0, len(results[0])):
+                    if isinstance(row[colCount], float):
+                        self.ui.successfulTable.setItem(currentRowCount, colCount, QTableWidgetItem(str(round(row[colCount], 2))))
+                    else:
+                        self.ui.successfulTable.setItem(currentRowCount, colCount, QTableWidgetItem(str(row[colCount])))
+                currentRowCount += 1
+        except Exception as e:
+            print("Query failed: ", str(e))
+
     def categoryChanged(self):
         if (self.ui.stateList.currentIndex() >= 0) and (len(self.ui.categoryList.selectedItems()) > 0):
             state = self.ui.stateList.currentText()
